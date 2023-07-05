@@ -1,0 +1,15 @@
+{
+  "name": "autocomplete-website",
+  "version": "1.0.0",
+  "description": "A Website that suggeste words for a user while typing",
+  "main": "server.js",
+  "scripts": {
+    "test": "test",
+    "start": "node server.js"
+  },
+  "author": "Mohammed",
+  "license": "ISC",
+  "dependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
