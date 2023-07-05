@@ -12,3 +12,8 @@ run npm i
 ```sh
 run node server.js
 ```
+
+the open 
+```sh
+localhost:3000
+```
