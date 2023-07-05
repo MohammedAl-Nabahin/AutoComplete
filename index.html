@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autocomplete Widget</title>
+    <style>
+        h1{
+            color: blue;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        div{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        input{
+            width: 25%;
+            height: 40px;
+        }
+
+        li{
+            font-size: 22px;
+            list-style: none;
+        }
+
+        #father{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .highlighted {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Autocomplete Website</h1>
+    <div id="father">
+        <input type="text" id="searchBox" placeholder="Type to search...">
+        <div>
+            <ul id="suggestionsList"></ul>
+        </div>
+    </div>
+
+
+  <script>
+            const searchBox = document.getElementById('searchBox');
+            const suggestionsList = document.getElementById('suggestionsList');
+
+            searchBox.addEventListener('input', () => {
+            const searchTerm = searchBox.value.trim();
+
+            if (searchTerm === '') {
+            suggestionsList.innerHTML = '';
+            } else {
+            // Send a request to the server with the search value
+            fetchSuggestions(searchTerm)
+            .then(suggestions => {
+            suggestionsList.innerHTML = '';
+
+            // Append each suggestion as a list item
+            suggestions.forEach(suggestion => {
+                const listItem = document.createElement('li');
+                const highlightedSuggestion = highlightSearchTerm(suggestion, searchTerm);
+                listItem.innerHTML = highlightedSuggestion;
+                suggestionsList.appendChild(listItem);
+            });
+            })
+            .catch(error => console.error(error));
+            }
+            });
+
+            async function fetchSuggestions(searchTerm) {
+            try {
+                const response = await fetch(`http://localhost:3000/suggestions?term=${searchTerm}`);
+                const suggestions = await response.json();
+                return suggestions;
+            } catch (error) {
+                throw new Error(error);
+            }
+            }
+
+
+
+            //function to highlight searched letters
+            function highlightSearchTerm(suggestion, searchTerm) {
+            const regex = new RegExp(searchTerm, 'gi');
+
+            const highlightedSuggestion = suggestion.replace(regex, `<span class="highlighted">$&</span>`);
+
+            return highlightedSuggestion;
+            }
+
+
+  </script>
+</body>
+</html>
